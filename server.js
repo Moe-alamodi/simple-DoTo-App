@@ -4,8 +4,8 @@ let mongodb = require('mongodb')
 let app = express()
 let db
 
-//app.use(express.static('public'))
-app.use('/public', express.static('/browser.js'));
+app.use(express.static('public'))
+//app.use('/public', express.static('/browser.js'));
 
 
 let connectionString = 'mongodb+srv://moealamodi:yA705316@cluster0.eooqa.mongodb.net/ToDoApp?retryWrites=true&w=majority'
@@ -34,7 +34,7 @@ app.get('/', function(req, res) {
   <div class="jumbotron p-3 shadow-sm">
   <form action="/create-item" method="POST">
   <div class="d-flex align-items-center">
-  <input name="item" autofocus autocomplete="off" class="form-control mr-3" type="text" style="flex: 1;">
+  <input name="item" autofocus autocomplete="off" class="form-control mr-3" type="text" style="flex: 1;" required>
   <button class="btn btn-primary">Add New Item</button>
   </div>
   </form>
