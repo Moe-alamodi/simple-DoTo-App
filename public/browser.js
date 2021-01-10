@@ -1,10 +1,10 @@
 document.addEventListener("click", function(e) {
     if (e.target.classList.contains("edit-me")) {
       let userInput = prompt("Enter your desired new text")
-      axios.post('/update-item', {text: userInput}).then(function () {
-        // do something interesting here in the next video
+      axios.post('/update-item', {text: userInput, id: e.target.getAttribute("data-id")}).then(function () {
+        e.target.parentElement.parentElement.querySelector(".item-text").innerHTML = userInput
       }).catch(function() {
         console.log("Please try again later.")
       })
     }
-  })
+  }) 

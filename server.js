@@ -5,8 +5,6 @@ let app = express()
 let db
 
 app.use(express.static('public'))
-//app.use('/public', express.static('/browser.js'));
-
 
 let connectionString = 'mongodb+srv://moealamodi:yA705316@cluster0.eooqa.mongodb.net/ToDoApp?retryWrites=true&w=majority'
 mongodb.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology: true}, function(err, client) {
@@ -45,7 +43,7 @@ app.get('/', function(req, res) {
       return `<li class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">
       <span class="item-text">${item.text}</span>
       <div>
-      <button class="edit-me btn btn-secondary btn-sm mr-1">Edit</button>
+      <button data-id="${item._id}" class="edit-me btn btn-secondary btn-sm mr-1">Edit</button>
       <button class="delete-me btn btn-danger btn-sm">Delete</button>
       </div>
       </li>`
@@ -58,7 +56,7 @@ app.get('/', function(req, res) {
   <script src="/browser.js"></script>
   </body>
   </html>`)
-  })
+  }) 
 })
 
 app.post('/create-item', function(req, res) {
@@ -68,6 +66,8 @@ app.post('/create-item', function(req, res) {
 })
 
 app.post('/update-item', function(req, res) {
-  console.log(req.body.text)
-  res.send("Success")
+  db.collection('items').findOneAndUpdate({_id: new mongodb.ObjectID(req.body.
+    id)}, {$set:{text: req.body.text}}, function(){
+    res.send("Success")
+  })
 })
