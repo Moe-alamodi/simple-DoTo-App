@@ -1,5 +1,6 @@
 let express = require('express')
 let mongodb = require('mongodb')
+let sanitizeHTML= require('sanitize-html')
 
 let app = express()
 let db
@@ -27,7 +28,9 @@ function passwordProtected(req, res, next){
   
 }
 
-app.get('/', passwordProtected, function(req, res) {
+app.use(passwordProtected)
+
+app.get('/', function(req, res) {
   db.collection('items').find().toArray(function(err, items) {
     res.send(`<!DOCTYPE html>
   <html>
@@ -72,13 +75,15 @@ app.get('/', passwordProtected, function(req, res) {
 })
 
 app.post('/create-item', function(req, res) {
-  db.collection('items').insertOne({text: req.body.item}, function() {
+  let saveText = sanitizeHTML (req.body.text, {allowedTags: [], allowedAttributes: {}})
+  db.collection('items').insertOne({text: saveText}, function() {
     res.redirect('/')
   })
 })
 
 app.post('/update-item', function(req, res) {
-  db.collection('items').findOneAndUpdate({_id: new mongodb.ObjectID(req.body.id)}, {$set:{text: req.body.text}}, function(){
+  let saveText = sanitizeHTML (req.body.text, {allowedTags: [], allowedAttributes: {}})
+  db.collection('items').findOneAndUpdate({_id: new mongodb.ObjectID(req.body.id)}, {$set:{text: saveText}}, function(){
     res.send("Success")
   })
 })
