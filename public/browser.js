@@ -10,7 +10,7 @@ document.addEventListener("click", function(e) {
     }
   }
   
-  //Update Feature  
+  //Update/Edit Feature  
   if (e.target.classList.contains("edit-me")) {
       let userInput = prompt("Enter your desired new text", e.target.parentElement.parentElement.querySelector(".item-text").innerHTML)
       if (userInput) {
